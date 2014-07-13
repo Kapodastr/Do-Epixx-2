@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../assets/js/jquery.js"></script>
+	<script src="../assets/js/handlebars.js"></script>
+	<script src="../assets/js/underscore.js"></script>
+	<script src="../assets/js/backbone.js"></script>
+	<!-- Секция с шаблонами -->
+
+	<script id="entry-template" type="text/x-handlebars-template">
+	  
+		<div>Привет, я шаблончик :)</div>
+
+	</script>
+
+
+	<script id="user-rewards" type="text/x-handlebars-template">
+	  
+		{{#each rows}}
+
+			<div><p>Заработано: {{earned}}</p></div>
+
+		{{/each}}
+
+	</script>
+
+
+	<!-- / Секция с шаблонами -->	
+
+	
+	<script>
+
+	function api_request(route,data){
+
+			var api = {};
+
+			api['url'] = "http://api.epixx.ru/";
+			api['route'] = route;
+			api['key'] = "2";
+
+			var request = jQuery.getJSON(api['url']+api['route']+"?apikey="+api['key'], {
+			                    
+				jsonp : true,
+				jsonpCallback: 'jsonCallback',
+				dataType: 'json',
+
+					success: function(){
+
+						console.log("loading");
+
+					}
+
+			});
+
+			request.fail(function(){ console.log("fail");});
+
+			request.error(function(){ console.log("error");});
+
+			request.done(function(){ console.log("done");});
+
+			return request;
+
+
+	}
+
+	
+	$(document).ready(function(){
+
+			//var checkme_request = ;
+
+			api_request("rewards/2").complete(function(data){ 
+
+				if(data.responseJSON.status!=200){ console.log("Ошибка при выполнении "+data.responseJSON.result);return false;} 
+
+				Handlebars.render("#user-rewards","body",{rows:data.responseJSON.result});
+
+			});
+
+
+			Handlebars.render = function(template,element,data){
+
+				var template = Handlebars.compile( $(template).html() );
+				$(element).append( template(data) );
+
+			}
+
+			// Начинаем инициализацию Backbone
+
+			var Rewards = Backbone.Model.extend({ 
+
+			 initButtons: function(element){ $("body").css("background-color","#f00") }
+
+			}) ;
+
+			Rewards.on("");
+
+			
+	}
+
+
+
+	);
+
+	</script>
+
+</head>
+<body>
+	1
+</body>
+</html>

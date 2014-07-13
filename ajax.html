@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Ajax Test</title>
+	<script src="js/jquery.js"></script>
+	<script>
+
+	$('document').ready(function(){
+
+		jQuery.extend({
+		   postJSON: function( url, data, callback) {
+		      return jQuery.post(url, data, callback, "json");
+		   }
+		});
+
+		function api_loader(url,dataset){
+
+			var request = jQuery.postJSON(url,{
+			                    
+				jsonp : true,
+				data: dataset,
+				method: "POST",
+				jsonpCallback: 'jsonCallback',
+				dataType: 'json'
+
+			});
+
+		return request;
+
+		}
+
+		/*  Конец функции, получающей данные */
+
+		var baseurl = "http://api.epixx.ru/";
+	
+		data = {name:"222"};
+	 
+		apiloader = api_loader(baseurl+"done/999/6881/2/6881",data);
+
+		// обработка событий запроса
+
+		apiloader.fail(function(){ console.log("fail"); });  	// запрос провален
+
+		apiloader.error(function(){ console.log("error"); });   // запрос с ошибкой 
+
+		apiloader.done(function(){ console.log("done"); });  // запрос выполнен
+
+		apiloader.complete(function(data){ alert(data.responseJSON['status']); })// запрос завершен
+
+		});
+
+		// 
+
+	</script>
+</head>
+<body>
+
+	<div class="wrapper">
+		
+	Вызываем апи для получения ...
+
+	</div>
+	
+</body>
+</html>

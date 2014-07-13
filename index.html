@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Тест апи</title>
+	<script src="js/require.js"></script>
+	<script>
+
+		window.onload = function(){
+
+			require.config({
+
+				baseUrl: 'js',
+				jquery: 'jquery-2',	
+				paths: {
+				
+				},		
+			   
+			});
+
+			
+			require(['jquery'], function( $ ) {
+
+					/* Инициализация здесь */
+
+					console.log("все загружено");
+
+					$.getJSON("http://localhost:8888/testdrive/json/1",
+
+				        function(data){
+
+				           console.log(data);
+
+				        }
+
+				        
+				    );
+
+			});
+
+	}
+
+	</script>
+</head>
+<body>
+	
+</body>
+</html>
